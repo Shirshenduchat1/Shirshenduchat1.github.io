@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srijit Chatterjee</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #0b0f1c 0%, #1a1f33 100%);
+            padding: 1.5rem;
+            transition: background 0.3s ease;
+        }
+
+        /* card */
+        .profile-card {
+            max-width: 960px;
+            width: 100%;
+            background: rgba(22, 28, 46, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card-inner {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 0;
+        }
+
+        /* left panel — avatar + quick stats */
+        .profile-left {
+            background: rgba(12, 16, 28, 0.7);
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .avatar:hover {
+            transform: scale(1.02);
+            border-color: #6d8cff;
+        }
+
+        .avatar-status {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: #2ecc71;
+            border-radius: 50%;
+            border: 3px solid #0c101c;
+            box-shadow: 0 0 12px #2ecc71;
+        }
+
+        .profile-name {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
+
+        .profile-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #9aa9c4;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .profile-title i {
+            color: #6d8cff;
+            font-size: 0.9rem;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: #8b98b0;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stats-mini {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .stat-mini-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-mini-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-mini-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #7b88a1;
+            font-weight: 500;
+        }
+
+        /* right panel — details & interactivity */
+        .profile-right {
+            padding: 2.5rem 2.5rem 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bio {
+            color: #cbd5e6;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            border-left: 3px solid #6d8cff;
+            padding-left: 1.2rem;
+            background: rgba(109, 140, 255, 0.05);
+            border-radius: 0 12px 12px 0;
+            padding: 1rem 1.2rem;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            color: #7b88a1;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            font-size: 0.9rem;
+            color: #6d8cff;
+        }
+
+        /* skills tags */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #cdd9f0;
+            transition: all 0.2s ease;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-tag i {
+            color: #6d8cff;
+            font-size: 0.8rem;
+        }
+
+        .skill-tag:hover {
+            background: rgba(109, 140, 255, 0.15);
+            border-color: rgba(109, 140, 255, 0.3);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* social + action buttons */
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b7c2d9;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            background: #6d8cff;
+            color: white;
+            border-color: #6d8cff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -8px #6d8cff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-primary {
+            background: #6d8cff;
+            color: white;
+            box-shadow: 0 12px 25px -10px #6d8cff;
+        }
+
+        .btn-primary:hover {
+            background: #5a7aff;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 30px -10px #6d8cff;
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cdd9f0;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* message toast / interactive feedback */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(30, 40, 65, 0.95);
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 20px 40px -10px black;
+            border: 1px solid rgba(109, 140, 255, 0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 999;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-message i {
+            color: #6d8cff;
+            font-size: 1.2rem;
+        }
+
+        /* micro interaction for avatar click */
+        .avatar:active {
+            transform: scale(0.98);
+        }
+
+        /* responsive */
+        @media (max-width: 750px) {
+            .card-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-left {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 2rem 1.5rem;
+            }
+
+            .profile-right {
+                padding: 2rem 1.5rem;
+            }
+
+            .avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-name {
+                font-size: 1.7rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.8rem;
+            }
+
+            .profile-card {
+                border-radius: 2rem;
+            }
+
+            .stats-mini {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <div class="card-inner">
+            <!-- LEFT SIDE: avatar & mini stats -->
+            <div class="profile-left">
+                <div class="avatar-wrapper">
+                    <!-- interactive avatar image - clicking triggers a toast -->
+                    <img 
+                        src="./srij.jpeg" 
+                        alt="Srijit Chatterjee" 
+                        class="avatar"
+                        id="avatarImg"
+                        title="Click me!"
+                    >
+                    <div class="avatar-status" title="Online now"></div>
+                </div>
+
+                <h1 class="profile-name">Srijit Chatterjee</h1>
+                <div class="profile-title">
+                    <i class="fas fa-code"></i> Class 8 student
+                </div>
+                <div class="location">
+                    <i class="fas fa-map-pin"></i> West Bengal, India
+                </div>
+
+                <!-- mini stats: followers, projects, etc. (static but can be hovered) -->
+                <div class="stats-mini">
+                    <div class="stat-mini-item">
+                        <span class="stat-mini-value">184</span>
+                        <span class="stat-mini-label">Projects</span>
+                    </div>
+                    <div class="stat-mini-item">
+                        <span class="stat-mini-value">12.4k</span>
+                        <span class="stat-mini-label">Followers</span>
+                    </div>
+                    <div class="stat-mini-item">
+                        <span class="stat-mini-value">98%</span>
+                        <span class="stat-mini-label">Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: bio, skills, socials, actions -->
+            <div class="profile-right">
+                <div class="bio">
+                    <i class="fas fa-quote-left" style="opacity:0.6; margin-right:8px;"></i>
+                    Class 8 student with two great loves — numbers and water. 🧮🌊 When I'm not solving tricky algebra problems or racing through geometry, you'll find me gliding through the pool, chasing my personal best. Math sharpens my mind, swimming builds my strength, and together they keep me focused, disciplined, and always ready for the next challenge. Whether it's a tough equation or a fast 50m sprint, I never back down. 
+                </div>
+
+                <!-- SKILLS section with interactive tags (click to see toast) -->
+                <div class="section-title">
+                    <i class="fas fa-bolt"></i> Expertise
+                </div>
+                <div class="skills-container" id="skillsContainer">
+                    <span class="skill-tag" data-skill="UI/UX Design"><i class="fas fa-paint-brush"></i> Maths</span>
+                    <span class="skill-tag" data-skill="Figma"><i class="fas fa-pen-fancy"></i> Physics </span>
+                    <span class="skill-tag" data-skill="Prototyping"><i class="fas fa-cube"></i> Swimming </span>
+                    <span class="skill-tag" data-skill="Design Systems"><i class="fas fa-layer-group"></i> Computer </span>
+                    <span class="skill-tag" data-skill="User Research"><i class="fas fa-users"></i> Chemistry </span>
+                    <span class="skill-tag" data-skill="HTML/CSS"><i class="fas fa-code"></i> History </span>
+                </div>
+
+                <!-- SOCIAL links (click triggers a toast) -->
+                <div class="section-title">
+                    <i class="fas fa-share-alt"></i> Connect
+                </div>
+                <div class="social-links" id="socialLinks">
+                    <a href="#" class="social-btn" data-social="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-btn" data-social="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-btn" data-social="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-btn" data-social="Dribbble"><i class="fab fa-dribbble"></i></a>
+                    <a href="#" class="social-btn" data-social="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <button class="btn-primary" id="followBtn">
+                        <i class="fas fa-user-plus"></i> Follow
+                    </button>
+                    <button class="btn-secondary" id="messageBtn">
+                        <i class="fas fa-paper-plane"></i> Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast message element -->
+    <div class="toast-message" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastText">Action completed</span>
+    </div>
+
+    <script>
+        (function(){
+            // ---------- TOAST FUNCTION ----------
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            let toastTimeout;
+
+            function showToast(message, iconClass = 'fa-check-circle') {
+                // update icon and text
+                const icon = toast.querySelector('i');
+                icon.className = `fas ${iconClass}`;
+                toastText.textContent = message;
+
+                // show toast
+                toast.classList.add('show');
+
+                // clear previous timeout
+                if (toastTimeout) clearTimeout(toastTimeout);
+                // auto hide after 2.5 seconds
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+
+            // ---------- AVATAR CLICK ----------
+            const avatar = document.getElementById('avatarImg');
+            avatar.addEventListener('click', () => {
+                showToast('👋 Hello! Thanks for checking my profile.', 'fa-hand-peace');
+            });
+
+            // ---------- SKILL TAGS CLICK ----------
+            const skillTags = document.querySelectorAll('.skill-tag');
+            skillTags.forEach(tag => {
+                tag.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const skill = tag.getAttribute('data-skill') || tag.innerText.trim();
+                    showToast(`⭐ Skill: ${skill} — proficiency level: advanced`, 'fa-star');
+                });
+            });
+
+            // ---------- SOCIAL LINKS ----------
+            const socialBtns = document.querySelectorAll('.social-btn');
+            socialBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();  // prevent page jump
+                    const social = btn.getAttribute('data-social') || 'social';
+                    showToast(`🔗 Opening ${social} profile... (demo)`, 'fa-external-link-alt');
+                });
+            });
+
+            // ---------- FOLLOW BUTTON ----------
+            const followBtn = document.getElementById('followBtn');
+            let isFollowing = false;
+
+            followBtn.addEventListener('click', () => {
+                isFollowing = !isFollowing;
+                if (isFollowing) {
+                    followBtn.innerHTML = '<i class="fas fa-check"></i> Following';
+                    followBtn.style.background = '#2ecc71';
+                    followBtn.style.boxShadow = '0 12px 25px -10px #2ecc71';
+                    showToast('✅ You are now following Alex Morgan', 'fa-user-check');
+                } else {
+                    followBtn.innerHTML = '<i class="fas fa-user-plus"></i> Follow';
+                    followBtn.style.background = '#6d8cff';
+                    followBtn.style.boxShadow = '0 12px 25px -10px #6d8cff';
+                    showToast('👋 Unfollowed Alex Morgan', 'fa-user-minus');
+                }
+            });
+
+            // ---------- MESSAGE BUTTON ----------
+            const messageBtn = document.getElementById('messageBtn');
+            messageBtn.addEventListener('click', () => {
+                showToast('📨 Message window would open (demo)', 'fa-envelope');
+            });
+
+            // ---------- MINI STATS HOVER (extra) ----------
+            const statItems = document.querySelectorAll('.stat-mini-item');
+            statItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    // subtle micro interaction - not a toast, just visual
+                    item.style.transform = 'translateY(-4px)';
+                    item.style.transition = 'transform 0.2s';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateY(0)';
+                });
+            });
+
+            // ---------- BACKGROUND INTERACTION (optional) ----------
+            // subtle glow on card hover (already in CSS)
+        })();
+    </script>
+</body>
+</html>
